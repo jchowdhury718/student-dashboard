@@ -1,24 +1,22 @@
 'use client'
-export const dynamic = 'force-dynamic'
 
 import { useEffect, useState } from 'react'
-import { supabase } from '../lib/supabase'
+import { createClient } from '@supabase/supabase-js'
+
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!
+const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+const supabase = createClient(supabaseUrl, supabaseAnonKey)
 
 export default function Home() {
   const [user, setUser] = useState<any>(null)
   const [isSignup, setIsSignup] = useState(false)
   const [use24Hour, setUse24Hour] = useState(false)
-
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
-
   const [classes, setClasses] = useState<any[]>([])
   const [deadlines, setDeadlines] = useState<any[]>([])
   const [files, setFiles] = useState<any[]>([])
 
-  if (!supabase) {
-    return <div style = {{ padding: 20 }}>Loading...</div>
-  }
   const [selectedClass, setSelectedClass] = useState('')
   const [file, setFile] = useState<File | null>(null)
 
