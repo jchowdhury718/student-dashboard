@@ -2,7 +2,7 @@
 export const dynamic = 'force-dynamic'
 
 import { useEffect, useState } from 'react'
-import { supabase } from '../lib/supabase'
+import { getSupabase } from '../lib/supabase'
 
 export default function Home() {
   const [user, setUser] = useState<any>(null)
@@ -16,6 +16,7 @@ export default function Home() {
   const [deadlines, setDeadlines] = useState<any[]>([])
   const [files, setFiles] = useState<any[]>([])
 
+  const supabase = getSupabase()
   const [selectedClass, setSelectedClass] = useState('')
   const [file, setFile] = useState<File | null>(null)
 
