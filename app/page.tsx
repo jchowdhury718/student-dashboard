@@ -17,6 +17,9 @@ export default function Home() {
   const [files, setFiles] = useState<any[]>([])
 
   const supabase = getSupabase()
+  if (!supabase) {
+    return <div style = {{ padding: 20 }}>Loading...</div>
+  }
   const [selectedClass, setSelectedClass] = useState('')
   const [file, setFile] = useState<File | null>(null)
 
