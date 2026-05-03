@@ -56,6 +56,24 @@ export default function Home() {
     setFiles(filtered)
   }
 
+  // ---------- DEADLINE COLOR LOGIC ----------
+  function getDeadlineStyle(dateStr: string) {
+    const today = new Date()
+    const due = new Date(dateStr)
+
+    today.setHours(0,0,0,0)
+    due.setHours(0,0,0,0)
+
+    const diff = (due.getTime() - today.getTime()) / (1000 * 60 * 60 * 24)
+
+    if (diff < 0) return styles.expired
+    if (diff === 0) return styles.today
+    if (diff === 1) return styles.tomorrow
+    if (diff <= 7) return styles.week
+
+    return {}
+  }
+
   function formatTime(time: string) {
     if (!time) return ''
     if (use24Hour) return time
@@ -207,11 +225,7 @@ export default function Home() {
       </div>
 
       <label style={styles.text}>
-        <input
-          type="checkbox"
-          checked={use24Hour}
-          onChange={()=>setUse24Hour(!use24Hour)}
-        />
+        <input type="checkbox" checked={use24Hour} onChange={()=>setUse24Hour(!use24Hour)} />
         Use 24-hour time
       </label>
 
@@ -250,7 +264,7 @@ export default function Home() {
           <button onClick={addDeadline} style={styles.button}>Add</button>
 
           {deadlines.map(d => (
-            <div key={d.id} style={styles.item}>
+            <div key={d.id} style={{...styles.item, ...getDeadlineStyle(d.due_date)}}>
               <span style={styles.text}>{d.title} — {d.due_date}</span>
               <button onClick={()=>deleteDeadline(d.id)} style={styles.delete}>Delete</button>
             </div>
@@ -303,6 +317,12 @@ const styles:any = {
   grid:{display:'grid',gridTemplateColumns:'repeat(auto-fit,minmax(300px,1fr))',gap:20},
   card:{background:'#fff',padding:20,borderRadius:10,boxShadow:'0 2px 10px rgba(0,0,0,0.1)',color:'#111'},
   item:{marginTop:10,padding:10,border:'1px solid #eee',borderRadius:6},
+
+  expired:{background:'#fee2e2'},
+  today:{background:'#fed7aa'},
+  tomorrow:{background:'#fef3c7'},
+  week:{background:'#dbeafe'},
+
   input:{width:'100%',marginBottom:10,padding:8,borderRadius:5,border:'1px solid #ccc',color:'#111'},
   text:{color:'#111'},
   button:{background:'#4f46e5',color:'white',padding:'8px 12px',border:'none',borderRadius:5,marginBottom:10,cursor:'pointer'},
