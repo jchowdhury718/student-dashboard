@@ -2,7 +2,7 @@
 export const dynamic = 'force-dynamic'
 
 import { useEffect, useState } from 'react'
-import { getSupabase } from '../lib/supabase'
+import { supabase } from '../lib/supabase'
 
 export default function Home() {
   const [user, setUser] = useState<any>(null)
@@ -16,7 +16,6 @@ export default function Home() {
   const [deadlines, setDeadlines] = useState<any[]>([])
   const [files, setFiles] = useState<any[]>([])
 
-  const supabase = getSupabase()
   if (!supabase) {
     return <div style = {{ padding: 20 }}>Loading...</div>
   }
